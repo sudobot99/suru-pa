@@ -39,7 +39,7 @@ Your memory starts blank. Seed it:
 ## Step 4: Set Up Obsidian (2nd Brain)
 
 1. Open the `obsidian-scaffold/` folder as a vault in Obsidian (File → Open Folder as Vault)
-2. Move/rename it to your preferred location (e.g. `~/Documents/MyBrain/`)
+2. Move/rename it to your preferred location (e.g. `~/Documents/SecondBrain/`)
 3. Run `obsidian-cli set-default "[vault-folder-name]"` to configure the CLI
 4. Update `MEMORY.md` section 6 with the vault path
 5. Run `obsidian-cli print-default` to verify

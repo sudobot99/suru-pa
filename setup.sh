@@ -173,7 +173,7 @@ fi
 # =============================================================================
 step "Obsidian vault"
 
-VAULT_DIR="$HOME/Documents/SuruBrain"
+VAULT_DIR="$HOME/Documents/SecondBrain"
 SCAFFOLD_DIR="$(cd "$(dirname "$0")" && pwd)/obsidian-scaffold"
 
 if obsidian-cli print-default &>/dev/null; then
