@@ -17,18 +17,24 @@ Built from real-world use. Not a proof-of-concept.
 
 ## What You Need
 
-- [OpenClaw](https://openclaw.ai) installed and running
-- [Obsidian](https://obsidian.md) installed (for 2nd brain)
-- [obsidian-cli](https://github.com/yakitrak/obsidian-cli) installed (`brew install yakitrak/yakitrak/obsidian-cli`)
+- macOS (Apple Silicon or Intel) — Linux support planned
+- [Obsidian](https://obsidian.md) installed (for 2nd brain) — the setup script handles everything else
+- API keys for: [Anthropic](https://console.anthropic.com), [OpenAI](https://platform.openai.com), [Google AI Studio](https://aistudio.google.com)
 
 ## Quickstart
 
-1. **Clone this repo** into your OpenClaw workspace:
+1. **Clone this repo:**
    ```bash
-   git clone https://github.com/sudobot99/suru-pa.git ~/.openclaw/workspace
+   git clone https://github.com/sudobot99/suru-pa.git ~/suru-pa && cd ~/suru-pa
    ```
 
-2. **Fill in the blanks** — edit these files:
+2. **Run the setup script** — installs all dependencies and deploys the workspace:
+   ```bash
+   bash setup.sh
+   ```
+   **Installs:** OpenClaw, Claude Code CLI, Codex CLI, Gemini CLI, GitHub CLI, 1Password CLI, obsidian-cli, Node.js v22. Configures git, sets up Obsidian vault, and deploys template files to your OpenClaw workspace.
+
+3. **Fill in the blanks** — edit these files:
    - `USER.md` — who you're helping
    - `IDENTITY.md` — name and personality for the assistant
    - `SOUL.md` — adjust tone, industry focus, key duties
@@ -43,6 +49,7 @@ Built from real-world use. Not a proof-of-concept.
 ## File Structure
 
 ```
+├── setup.sh              # ← Run this first. Installs everything.
 ├── BOOTSTRAP.md          # First-run instructions (assistant reads this on day 1)
 ├── SOUL.md               # Persona and tone
 ├── USER.md               # Who you're helping
