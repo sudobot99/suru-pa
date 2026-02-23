@@ -1,0 +1,14 @@
+{
+  "currentTask": "First-run setup",
+  "progress": [],
+  "pendingActions": [
+    "Complete BOOTSTRAP.md setup steps",
+    "Seed MEMORY.md with initial context",
+    "Set up Obsidian vault",
+    "Introduce self to user"
+  ],
+  "recentDecisions": [],
+  "blockers": [],
+  "conversationContext": "Fresh install. No history yet.",
+  "_autoUpdated": "REPLACE_WITH_CURRENT_ISO_TIMESTAMP"
+}
