@@ -15,36 +15,35 @@ Built from real-world use. Not a proof-of-concept.
 - **Agent workflow patterns** — multi-agent coordination, PM decomposition, cost tracking
 - **Startup prompt** — paste once, the assistant orients itself and gets to work
 
-## What You Need
-
-- macOS (Apple Silicon or Intel) — Linux support planned
-- [Obsidian](https://obsidian.md) installed (for 2nd brain) — the setup script handles everything else
-- API keys for: [Anthropic](https://console.anthropic.com), [OpenAI](https://platform.openai.com), [Google AI Studio](https://aistudio.google.com)
-
 ## Quickstart
 
-1. **Clone this repo:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/sudobot99/suru-pa/main/bootstrap.sh | bash
+```
+
+That's it. The one-liner installs everything, deploys the workspace, and walks you through OpenClaw onboarding.
+
+**What you need beforehand:**
+- macOS (Apple Silicon or Intel) — Linux support planned
+- [Obsidian](https://obsidian.md) installed (for 2nd brain)
+- API keys ready for: [Anthropic](https://console.anthropic.com), [OpenAI](https://platform.openai.com), or [Google AI Studio](https://aistudio.google.com) — the onboarding wizard will ask for them
+
+**After the one-liner completes:**
+
+1. **Fill in the workspace files:**
+   - `~/.openclaw/workspace/USER.md` — who you're helping (name, business, contact info)
+   - `~/.openclaw/workspace/SOUL.md` — adjust the persona (`{{owner_name}}`, `{{business_type}}`, `{{industry}}`)
+   - `~/.openclaw/workspace/IDENTITY.md` — assistant name and vibe
+   - `~/.openclaw/workspace/TOOLS.md` — local setup specifics (SSH hosts, devices, passwords manager)
+
+2. **Set up Obsidian** — open `~/Documents/SecondBrain` as a vault in Obsidian, then run:
    ```bash
-   git clone https://github.com/sudobot99/suru-pa.git ~/suru-pa && cd ~/suru-pa
+   obsidian-cli set-default "SecondBrain"
    ```
 
-2. **Run the setup script** — installs all dependencies and deploys the workspace:
-   ```bash
-   bash setup.sh
-   ```
-   **Installs:** OpenClaw, Claude Code CLI, Codex CLI, Gemini CLI, GitHub CLI, 1Password CLI, obsidian-cli, Node.js v22. Configures git, sets up Obsidian vault, and deploys template files to your OpenClaw workspace.
+3. **Paste the startup prompt** (from `STARTUP-PROMPT.md`) into your OpenClaw chat. The assistant orients itself, reads its files, and gets to work.
 
-3. **Fill in the blanks** — edit these files:
-   - `USER.md` — who you're helping
-   - `IDENTITY.md` — name and personality for the assistant
-   - `SOUL.md` — adjust tone, industry focus, key duties
-   - `TOOLS.md` — add local setup specifics (SSH hosts, devices, etc.)
-
-3. **Set up Obsidian** — open the `obsidian-scaffold/` folder as an Obsidian vault, then rename/move to your preferred location. Update `MEMORY.md` section 7 with the vault path.
-
-4. **Paste the startup prompt** (from `STARTUP-PROMPT.md`) into your OpenClaw chat. The assistant will orient itself.
-
-5. **Seed MEMORY.md** — add your business context, key people, infrastructure. The more you put in, the faster it gets useful.
+4. **Seed MEMORY.md** — add business context, key people, infrastructure. The more you put in, the faster it gets useful.
 
 ## File Structure
 
