@@ -108,16 +108,13 @@ chmod +x "$INSTALL_DIR/setup.sh"
 bash "$INSTALL_DIR/setup.sh"
 
 # =============================================================================
-# Step 7: Start OpenClaw gateway
+# Step 7: OpenClaw Onboarding
 # =============================================================================
-step "Starting OpenClaw gateway"
-if openclaw gateway status &>/dev/null; then
-  ok "OpenClaw gateway already running"
-else
-  info "Starting OpenClaw gateway..."
-  openclaw gateway start
-  ok "Gateway started"
-fi
+step "OpenClaw onboarding"
+info "Running OpenClaw interactive onboarding wizard..."
+info "This sets up your API keys, gateway service, channels, and skills."
+echo ""
+openclaw onboard
 
 # =============================================================================
 # Done
@@ -131,7 +128,7 @@ echo -e "${BOLD}Your one-liner install is done. Next:${NC}"
 echo ""
 echo "  1. Fill in your details:"
 echo "     nano ~/.openclaw/workspace/USER.md"
-echo "     nano ~/.openclaw/workspace/SOUL.md"
+echo "     nano ~/.openclaw/workspace/SOUL.md   ← replace {{owner_name}}, {{business_type}}, {{industry}}"
 echo ""
 echo "  2. Open Obsidian → load vault from:"
 echo "     $HOME/Documents/SecondBrain"
@@ -139,6 +136,7 @@ echo "     Then run: obsidian-cli set-default \"SecondBrain\""
 echo ""
 echo "  3. Open OpenClaw and paste this startup prompt:"
 echo "     ────────────────────────────────────────────"
-cat "$INSTALL_DIR/STARTUP-PROMPT.md" | grep -A5 "## The Prompt" | grep '```' -A5 | grep -v '```' | sed 's/^/     /'
+grep -A3 "You've just been deployed" "$INSTALL_DIR/STARTUP-PROMPT.md" 2>/dev/null | sed 's/^/     /' || \
+  echo "     See: $INSTALL_DIR/STARTUP-PROMPT.md"
 echo "     ────────────────────────────────────────────"
 echo ""

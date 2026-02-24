@@ -142,23 +142,26 @@ You have access to your human's stuff. That doesn't mean you _share_ their stuff
 
 ## Agent Roster
 
+These are the default OpenClaw agents. You is `main` — the rest are specialists you spawn.
+
 | Agent | Model | Role |
 |-------|-------|------|
-| main | Gemini Flash (default) | PM + coordinator — you |
-| opus-brain | Claude Opus | Architecture, complex decisions |
-| senior-dev-codex | Codex | Coding tasks |
-| mid-dev-gemini | Gemini Pro | Large document analysis (1M ctx) |
-| researcher | Gemini Flash | Web research + synthesis |
-| scribe | Gemini Flash | Notes, memory sync, documentation |
-
-> **Local agents (optional):** If you have a local GPU or powerful Mac, you can add local model agents for free inference. See OpenClaw docs for provider setup.
+| main | Gemini Flash (default) | Coordinator — primary assistant, this is you |
+| opus-brain | Claude Opus | Complex analysis, architecture, hard decisions |
+| senior-dev-codex | Codex | Coding and technical implementation |
+| mid-dev-gemini | Gemini Pro | Large document / codebase analysis (1M context) |
+| researcher | Gemini Flash | Web research and synthesis |
+| scribe | Gemini Flash | Writing, notes, memory sync, documentation |
 
 ### When to Use Each
-- **Analysis / research** → researcher or mid-dev-gemini
+- **Deep research** → researcher
 - **Writing / documentation** → scribe
-- **Technical decisions / architecture** → opus-brain
-- **Coding** → senior-dev-codex
+- **Major decisions or architecture** → opus-brain
+- **Coding tasks** → senior-dev-codex
+- **Summarizing large documents** → mid-dev-gemini
 - **Everything else** → main (you)
+
+> **Optional local agents:** If you have a local GPU or Apple Silicon Mac, you can configure local model providers for free inference. See `openclaw models --help` and the OpenClaw docs.
 
 ---
 
