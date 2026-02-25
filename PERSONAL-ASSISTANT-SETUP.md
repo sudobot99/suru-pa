@@ -134,7 +134,7 @@ These scripts run on a schedule via LaunchAgents (see Phase 6). You write them o
 
 | Script | What it does | M365 endpoint |
 |--------|-------------|--------------|
-| `sync-email.ts` | Pulls new emails into `personal.db` using Graph delta | `/users/{id}/mailFolders/inbox/messages/delta` |
+| `sync-email.ts` | Pulls new emails into `padata.db` using Graph delta | `/users/{id}/mailFolders/inbox/messages/delta` |
 | `sync-calendar.ts` | Pulls calendar events (±90 days) using delta | `/users/{id}/calendarView/delta` |
 | `sync-todos.ts` | Pulls To-Do tasks from all lists | `/users/{id}/todo/lists/{id}/tasks/delta` |
 
@@ -150,7 +150,7 @@ These scripts run on a schedule via LaunchAgents (see Phase 6). You write them o
 
 Two databases. Keep them separate.
 
-### `personal.db` — Operational Data
+### `padata.db` — Operational Data
 
 Create with the following tables:
 
@@ -391,13 +391,13 @@ Run through these after setup to confirm everything is wired correctly.
 
 ### Email
 - [ ] `sync-email.ts` runs without errors, ingests at least 1 email
-- [ ] `personal.db` has rows in `emails` table
+- [ ] `padata.db` has rows in `emails` table
 - [ ] Email does NOT get marked as read in Outlook after sync (verify in mail client)
 - [ ] `embed-emails.ts` runs and generates vectors for new emails
 
 ### Calendar
 - [ ] `sync-calendar.ts` runs without errors
-- [ ] `personal.db` has rows in `calendar_events` table
+- [ ] `padata.db` has rows in `calendar_events` table
 - [ ] `sync-todos.ts` runs (may need `Tasks.ReadWrite.All` app permission in Azure)
 
 ### Automations
@@ -452,7 +452,7 @@ Run through these after setup to confirm everything is wired correctly.
 │   ├── discord-digest.ts      # Daily morning briefing
 │   └── brain-dump.sh          # MEMORY.md → Obsidian mirror
 ├── data/
-│   ├── personal.db            # Operational data (email, calendar, tasks)
+│   ├── padata.db            # Operational data (email, calendar, tasks)
 │   └── embeddings.db          # Email bodies + vectors
 └── launchagents/
     ├── com.pa.email-sync.plist
@@ -473,7 +473,7 @@ Run through these after setup to confirm everything is wired correctly.
 2. ✅ Phase 2 — Memory system (MEMORY.md seed + Total Recall config)
 3. ✅ Phase 3 — Obsidian vault structure + git backup
 4. ✅ Phase 4 — M365 app registration + Graph API permissions
-5. ✅ Phase 5 — Create `personal.db` and `embeddings.db` with correct schemas
+5. ✅ Phase 5 — Create `padata.db` and `embeddings.db` with correct schemas
 6. ✅ Phase 6 — Write and install all LaunchAgents
 7. ✅ Phase 7 — Configure agents in openclaw.json
 8. ✅ Phase 8 — Connect messaging channel
