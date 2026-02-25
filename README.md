@@ -67,6 +67,16 @@ That's it. The one-liner installs everything, deploys the workspace, and walks y
     └── brain-dump-cron.md    # Instructions for setting up the brain dump automation
 ```
 
+## Going Deeper
+
+The base install gives you a smart assistant with memory. If you want the full stack — email + calendar intelligence, vector search over your inbox, semantic memory (Total Recall), and a living 2nd Brain in Obsidian — read the full setup guide:
+
+**[→ Personal Assistant Setup Guide](PERSONAL-ASSISTANT-SETUP.md)**
+
+Covers: M365 integration, database schemas, background automations, Total Recall configuration, Obsidian vault structure, agent roster, and a validation checklist.
+
+---
+
 ## Philosophy
 
 The value isn't in the data — it's in the architecture. Memory that survives resets. A persona that doesn't sycophant. An assistant that delegates instead of blocking. Obsidian as a growing brain that outlasts any single session.
