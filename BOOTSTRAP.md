@@ -58,6 +58,14 @@ Keep it short. Business first.
 
 ---
 
+## Step 5b: Build the Full Personal Assistant Stack (Optional)
+
+If this deployment is meant to be a full personal assistant (email + calendar intelligence, Total Recall, Obsidian 2nd Brain, background automations), read `CONFIGURE.md` now and follow it phase by phase. It is a machine-readable build plan written specifically for you to execute.
+
+If this is a simpler deployment (just the assistant workspace, no integrations), skip it.
+
+---
+
 ## Step 6: Archive This File
 
 Once setup is complete, move this file:
