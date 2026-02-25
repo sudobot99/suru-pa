@@ -36,6 +36,7 @@ Set up who this assistant is and who it's helping.
 - [ ] Customize `SOUL.md` — replace all `{{placeholders}}` with real values. Adjust tone, duties, and financial focus to match the person
 - [ ] Fill in `IDENTITY.md` — assistant name and personality descriptor
 - [ ] Fill in `TOOLS.md` — password manager vault name, key machines, installed tools, GitHub username
+- [ ] Configure `HEARTBEAT.md` — define what the assistant checks proactively on each heartbeat cycle (email urgency thresholds, calendar lookahead window, DB freshness alerts, anything custom to this person)
 - [ ] Commit everything: `git commit -m "setup: workspace identity configured"`
 
 ### Notes
@@ -89,8 +90,8 @@ Set up the structured knowledge vault that survives beyond any single session.
 ### Checklist
 
 - [ ] Create the vault directory: `~/Documents/SecondBrain/` (or preferred location)
-- [ ] Set it as the default vault: `obsidian-cli set-default "SecondBrain"`
-- [ ] Open in Obsidian: File → Open Folder as Vault → select the directory
+- [ ] Open in Obsidian **first**: File → Open Folder as Vault → select the directory
+- [ ] Then set it as the CLI default: `obsidian-cli set-default "SecondBrain"` (Obsidian must be open with the vault loaded for this to work)
 - [ ] Create the base folder structure:
   - `Brain/` — MEMORY.md mirror + active context (auto-updated)
   - `People/` — profiles for key relationships
@@ -113,18 +114,17 @@ Connect Microsoft 365 for email and calendar intelligence.
 
 You need to register an app in Azure to get API access to mail and calendar.
 
-- [ ] Go to: `https://portal.azure.com` → Azure Active Directory → App registrations → New registration
+- [ ] Go to: `https://portal.azure.com` → Microsoft Entra ID → App registrations → New registration
 - [ ] Name: `OpenClaw Personal Assistant` (or similar)
 - [ ] Account type: Single tenant
 - [ ] No redirect URI needed (client credentials flow)
 - [ ] After creation, note: **Application (client) ID** and **Directory (tenant) ID**
 - [ ] Create a client secret: Certificates & secrets → New client secret → note the value immediately (won't show again)
 - [ ] Add Graph API Application Permissions (not Delegated):
-  - `Mail.Read` — read emails
-  - `Mail.ReadWrite` — if you want sync to mark items (optional)
-  - `Calendars.ReadWrite` — read + write calendar events
-  - `Tasks.ReadWrite.All` — read/write To-Do tasks (requires admin consent)
-  - `User.Read.All` — resolve user info
+  - `Mail.Read` — read emails (sync is read-only, do NOT add Mail.ReadWrite)
+  - `Calendars.ReadWrite` — needed if you want to write calendar suggestions back to M365; use `Calendars.Read` if read-only
+  - `Tasks.ReadWrite.All` — read/write To-Do tasks (requires tenant admin consent — see Known Gotchas #2)
+  - `User.Read.All` — resolve user/mailbox info
 - [ ] Grant admin consent for all permissions
 - [ ] Store credentials securely (1Password recommended)
 
@@ -312,20 +312,24 @@ These keep everything fresh without you thinking about it. Each is a macOS Launc
 
 ### LaunchAgent Checklist (per agent)
 
+> **Label prefix:** The examples use `com.pa.*` — replace `pa` with your own identifier (e.g. `com.yourname.*`). Use it consistently so `launchctl list | grep com.yourname` finds all your agents.
+
 - [ ] Create plist in `~/Library/LaunchAgents/com.pa.<name>.plist`
-- [ ] Use full paths for executables (`/opt/homebrew/bin/npx`, not `npx`)
-- [ ] Set working directory to the project root (`WorkingDirectory` key)
-- [ ] Pass required environment variables as `EnvironmentVariables` dict in plist
-- [ ] Load with: `launchctl load ~/Library/LaunchAgents/com.pa.<name>.plist`
+- [ ] Use full paths for all executables (`/opt/homebrew/bin/npx`, not `npx` — LaunchAgents run without your shell PATH)
+- [ ] Set working directory to the scripts folder (`WorkingDirectory` key)
+- [ ] Pass required environment variables as `EnvironmentVariables` dict in plist (API keys, DB paths, etc.)
+- [ ] Load with: `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.pa.<name>.plist`
+  - Note: `launchctl load` still works but is deprecated in macOS 13+. Use `bootstrap` going forward.
 - [ ] Verify loaded: `launchctl list | grep com.pa`
 - [ ] Test run: `launchctl kickstart -k gui/$(id -u)/com.pa.<name>`
+- [ ] Check logs: `log stream --predicate 'subsystem == "com.apple.launchd"' 2>/dev/null | grep com.pa`
 
 ### Brain Dump Script
 
-The brain dump runs every 2 hours and does two things:
+The brain dump runs every 2 hours and does three things:
 1. Copies the latest `MEMORY.md` verbatim into `~/SecondBrain/Brain/MEMORY-Mirror.md`
 2. Formats `state/active-context.json` into a readable `~/SecondBrain/Brain/Active-Context.md`
-3. Commits and pushes the vault if content changed
+3. Commits and pushes the vault only if content actually changed (no empty commits)
 
 It's deterministic — no LLM, no API calls, always succeeds.
 
@@ -333,12 +337,27 @@ It's deterministic — no LLM, no API calls, always succeeds.
 
 ## Phase 7 — Agent Configuration
 
+### Configuring Agents
+
+Use the OpenClaw CLI to create and configure agents:
+
+```bash
+openclaw agents --help          # see all agent commands
+openclaw configure              # interactive wizard — easiest way to set models
+```
+
+Or edit `~/.openclaw/openclaw.json` directly under the `agents` key. Each agent entry needs at minimum:
+- `model` — provider/model string (e.g. `anthropic/claude-sonnet-4-6`, `google/gemini-3-flash-preview`)
+- `workspace` — path to the agent's workspace directory
+
+The `main` agent is created during `openclaw onboard`. Additional agents are added manually.
+
 ### Workspace Files for Each Agent
 
-Each agent gets its own workspace copy. At minimum, non-main agents need:
-- Their role defined in `AGENTS.md`
-- Same `SOUL.md` and `USER.md` as main (for context)
-- Read access to `MEMORY.md`
+Non-main agents are isolated by default but should share context. At minimum, each sub-agent needs:
+- Its role documented in its own `AGENTS.md`
+- Access to the same `USER.md` and `SOUL.md` as main (copy or symlink)
+- Its `MEMORY.md` seeded with role-specific context
 
 ### Recommended Agents
 
